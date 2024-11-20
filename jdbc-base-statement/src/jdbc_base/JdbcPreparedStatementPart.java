@@ -18,6 +18,8 @@ public class JdbcPreparedStatementPart {
         String account = sc.nextLine();
         System.out.println("please input your password");
         String password = sc.nextLine();
+        sc.close();
+
 
         // 1.注册驱动
         Class.forName("com.mysql.cj.jdbc.Driver");

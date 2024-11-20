@@ -18,7 +18,7 @@ public class JdbcStatementLoginPart {
         String account = sc.nextLine();
         System.out.println("请输入密码：");
         String password = sc.nextLine();
-
+        sc.close();
 
         // 1.注册驱动
         /**

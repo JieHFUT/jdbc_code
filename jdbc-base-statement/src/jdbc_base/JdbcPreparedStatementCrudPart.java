@@ -27,6 +27,8 @@ public class JdbcPreparedStatementCrudPart {
         String account = scanner.nextLine();
         System.out.println("please input the password that you want to add:");
         String password = scanner.nextLine();
+        scanner.close();
+
 
         // 1. 注册驱动
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -69,6 +71,8 @@ public class JdbcPreparedStatementCrudPart {
         Scanner sc = new Scanner(System.in);
         System.out.println("please input the account that you want to delete");
         String account = sc.nextLine();
+        sc.close();
+
 
         // 1.注册驱动
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -107,7 +111,7 @@ public class JdbcPreparedStatementCrudPart {
         String account = scanner.nextLine();
         System.out.println("please input the password that you want to update");
         String password = scanner.nextLine();
-
+        scanner.close();
 
         // 1.注册驱动
         Class.forName("com.mysql.cj.jdbc.Driver");
