@@ -140,6 +140,7 @@ public class JdbcPreparedStatementCrudPart extends BaseDao{
 
         List<Map<String, Object>> list = new ArrayList<>();
         // 获取列信息对象
+        // TODO: metaData => 装的是当前结果集 列的信息对象（可以获取列的名称根据下角标，获取列的数量）
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
         while (resultSet.next()) {
