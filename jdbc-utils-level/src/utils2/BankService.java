@@ -1,4 +1,4 @@
-package jdbc_bank.second_bank;
+package utils2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -31,22 +31,19 @@ public class BankService {
 
 
 
-        //1.注册驱动
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        //2.获取连接
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/atchery",
-                "root",
-                "959452");
 
+
+        // 获取连接
+        Connection connection = JdbcUtils2.getConnection();
 
         try {
             // TODO: 开始事务(即关闭自动提交)
             connection.setAutoCommit(false);
 
             // 对向外转钱的一方进行扣钱
-            bankDao.subMoney(subAccount, 500, connection);
+            bankDao.subMoney(subAccount, 500);
             // 对到账的一方进行加钱
-            bankDao.addMoney(addAccount, 500, connection);
+            bankDao.addMoney(addAccount, 500);
 
 
             //TODO: 关闭事务
@@ -57,7 +54,7 @@ public class BankService {
             //抛出异常信息
             throw e;
         } finally {
-            connection.close();
+            JdbcUtils2.freeConnection();
         }
 
     }

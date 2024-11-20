@@ -24,10 +24,10 @@ public class BankService {
         System.out.println("addAccount = " + addAccount + "; subAccount = " + subAccount + "; money = " + money);
         BankDao bankDao = new BankDao();
         // 对向外转钱的一方进行扣钱
-        bankDao.subMoney("subAccount", 500);
+        bankDao.subMoney(subAccount, 500);
 
         // 对到账的一方进行加钱
-        bankDao.addMoney("addAccount", 500);
+        bankDao.addMoney(addAccount, 500);
 
 
 

@@ -1,7 +1,7 @@
-package utils;
-
+package utils2;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
+import utils.JdbcUtils;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -11,25 +11,23 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * ClassName: JdbcUtils
- * Package: utils
+ * ClassName: JdbcUtils2
+ * Package: utils2
  * Description:
- * 1.0的工具类
- * 用来创建一个 Druid 链接池对象，将其封装起来，向外提供两个接口：获得和回收的接口
- * 工具类的方法推荐写成静态的
+ * 利用本地线程变量，存储连接信息！确保一个线程的多个方法使用的是同一个 Connection
+ * 在做事务操作的时候 service 和 dao 层属于同一个线程，就不用再传递参数了
  *
- * 实现
- *      属性：连接池对象，并且其只会实例化一次
- *           单例模式：静态代码快
- *      方法：对外提供连接的方法，回收外部传入的方法
  * @Author jieHFUT
- * @Create 2024/11/20 22:16
+ * @Create 2024/11/20 22:34
  * @Version 1.0
  */
-public class JdbcUtils {
+public class JdbcUtils2 {
 
     // 连接池对象
     private static DataSource dataSource = null;
+
+    // 本地线程变量的连接
+    private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
 
     // 创建单例模式
     static {
@@ -57,16 +55,30 @@ public class JdbcUtils {
      * @return
      */
     public static Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        // 先查看线程本地变量中是否存在连接
+        Connection connection = threadLocal.get();
+        if (connection == null) {
+            // 线程本地变量没有就通过连接池获取
+            connection = dataSource.getConnection();
+            threadLocal.set(connection);
+        }
+        return connection;
     }
 
     /**
      * 对外提供一个归还连接的方法
-     * @param connection
+     * @param
      */
-    public static void freeConnection(Connection connection) throws SQLException {
-        //连接池的连接，调用 close() 就是回收
-        connection.close();
+    public static void freeConnection() throws SQLException {
+        Connection connection = threadLocal.get();
+        if (connection != null) {
+            // 清空线程本地变量数据
+            threadLocal.remove();
+            // 事务状态回归
+            connection.setAutoCommit(true);
+            connection.close();
+        }
     }
+
 
 }
