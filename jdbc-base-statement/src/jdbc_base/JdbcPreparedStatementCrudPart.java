@@ -124,8 +124,7 @@ public class JdbcPreparedStatementCrudPart {
         PreparedStatement statement = connection.prepareStatement(sql);
 
         statement.setObject(1, password);
-        statement.setString(2, account);
-
+        statement.setObject(2, account);
         int result = statement.executeUpdate();
 
         System.out.println("执行结果为：" + result);
