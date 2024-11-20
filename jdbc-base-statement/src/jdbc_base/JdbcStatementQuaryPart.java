@@ -22,8 +22,9 @@ public class JdbcStatementQuaryPart {
 
 
         //2.获取连接
-        Connection connection =
-                DriverManager.getConnection("jdbc:mysql//localhost:3306/atchery", "root", "959452");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/atchery",
+                "root",
+                "959452");
 
         //3.创建发送小车工具
         Statement statement = connection.createStatement();
@@ -36,8 +37,18 @@ public class JdbcStatementQuaryPart {
 
         //6.对查询的结果进行解析
         while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String account = resultSet.getString("account");
+            String password = resultSet.getString("password");
 
+            String ret = "id=" + id + ", account=" + account + ", password=" + password;
+            System.out.println(ret);
         }
+
+        //7.关闭资源
+        resultSet.close();
+        statement.close();
+        connection.close();
 
 
     }
