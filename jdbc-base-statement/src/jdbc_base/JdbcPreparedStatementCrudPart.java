@@ -5,7 +5,7 @@ import com.mysql.cj.jdbc.exceptions.ConnectionFeatureNotAvailableException;
 import org.junit.Test;
 
 import java.sql.*;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @Author
@@ -187,6 +187,43 @@ public class JdbcPreparedStatementCrudPart {
         ResultSet resultSet = statement.executeQuery();
 
         // 5.对查询结果进行分析
+        /**
+         * // TODO: map {
+         *          key:"id", value:id
+         *          key:"account", value:account
+         *          key:"password", value:password
+         *          }
+         */
+//        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+//        while (resultSet.next()) {
+//            // 此时是查询的一行数据 id account password
+//            Map<String, Object> map = new HashMap<String, Object>();
+//            map.put("id", resultSet.getInt("id"));
+//            map.put("account", resultSet.getString("account"));
+//            map.put("password", resultSet.getString("password"));
+//            list.add(map);
+//        }
+//        // 打印结果：
+//        System.out.println(list);
+//        //  结果：[{password=zhangliang123, id=1, account=zhangliang}, {password=dahua325142351, id=3, account=dahua}]
+
+
+
+        List<Map<String, Object>> list = new ArrayList<>();
+        // 获取列信息对象
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        while (resultSet.next()) {
+            for (int i = 0; i < columnCount; i++) {
+                Map<String, Object> map = new HashMap<>();
+                map.put(metaData.getColumnLabel(i), resultSet.getObject(i));
+                //      获取列的别名(没有别名就用列的名称)           这一行本列的数据
+                list.add(map);
+            }
+        }
+        // 打印结果
+        System.out.println(list);
+
     }
 
 
