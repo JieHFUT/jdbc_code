@@ -1,10 +1,15 @@
 package druid;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.alibaba.druid.pool.DruidPooledConnection;
 
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * ClassName: DruidUsePart
@@ -20,7 +25,7 @@ import java.sql.SQLException;
  */
 public class DruidUsePart {
 
-    public void testDruid() throws SQLException {
+    public void testDruidHard() throws SQLException {
         //1.创建一个 druid 连接池对象
         DruidDataSource druidDataSource = new DruidDataSource();
         //2.设置连接池参数
@@ -41,4 +46,49 @@ public class DruidUsePart {
         //4.回收连接
         connection.close();
     }
+
+
+
+
+
+
+
+    public void testDruidSoft() throws Exception {
+        //1.读取外部的配置文件的内容 properties
+        Properties properties = new Properties();
+        //以流的形式来获取配置文件的内容
+        InputStream resourceAsStream = DruidUsePart.class.getClassLoader().getResourceAsStream("druid.properties");
+        properties.load(resourceAsStream);
+
+        //2.使用连接池的工具类的工程模式来创建连接池
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
+        //3.获取连接
+        Connection connection = dataSource.getConnection();
+
+        // 在这个地方进行对数据库的 CURD 操作
+
+        //4.回收连接
+        connection.close();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
