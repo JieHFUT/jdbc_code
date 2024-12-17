@@ -26,7 +26,7 @@ public class JdbcStatementQuaryPart {
                 "root",
                 "959452");
 
-        //3.创建发送小车工具
+        //3.创建发送小车工具（预编译）
         Statement statement = connection.createStatement();
 
         //4.构造 sql 语句
