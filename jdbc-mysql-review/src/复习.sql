@@ -474,6 +474,7 @@ WHERE department_id IN (# 平均工资最低的部门ID
 					LIMIT 1 OFFSET 0
 					)
 			)
+
 #方式4：
 SELECT d.*
 FROM departments d, (
